@@ -1,5 +1,9 @@
-import loadData from './services/api';
+import Posts from './components/Posts/Posts';
 
 export default function App(): React.ReactNode {
-  return <main>{loadData()}</main>;
+  return (
+    <main>
+      <Posts />
+    </main>
+  );
 }

@@ -6,8 +6,4 @@ import App from './app.tsx';
 const root = document.getElementById('root');
 if (!root) throw new Error("Root container didn't found");
 
-createRoot(root).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+createRoot(root).render(<App />);
