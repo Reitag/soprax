@@ -1,8 +1,9 @@
+import Posts from './components/Posts/Posts';
+
 export default function App(): React.ReactNode {
   return (
     <main>
-      <h1>React</h1>
-      <p>Hello React</p>
+      <Posts />
     </main>
   );
 }
