@@ -1,4 +1,4 @@
-import SpinnerURL from '@/icons/spinner.svg';
+import SpinnerURL from './assets/spinner.svg';
 import styles from './Spinner.module.scss';
 
 const Spinner: React.FC = () => {

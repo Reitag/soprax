@@ -1,12 +1,12 @@
-export async function apiFetchData<T>(url: string, emtptyData: unknown): Promise<T | undefined> {
+export async function apiFetchData<T>(url: string, emptyData: unknown): Promise<T | undefined> {
   try {
-    // Positive scenarion
+    // Positive scenario
     const response = await fetch(url);
     if (response.status === 200) {
       return await response.json(); // Expected case
     }
     if (response.status === 404) {
-      return emtptyData as T;
+      return emptyData as T;
     }
   } catch (error) {
     // Negative scenario
