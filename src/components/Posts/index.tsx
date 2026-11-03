@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { apiFetchData } from '@/services/api';
@@ -7,12 +8,14 @@ import { API_ENDPOINTS } from '@/services/api/config';
 import Spinner from '@/ui-kit/Spinner';
 
 import Post from './Post';
+import ModalWindow from '@/components/Modal';
 import { type Post as PostType } from './types';
 
 import styles from './index.module.scss';
 
 const Posts: React.FC = () => {
   const [postsData, setPostData] = useState<PostType[] | null>(null);
+  const [isModalWindow, setIsModalWindow] = useState(false);
 
   useEffect(() => {
     apiFetchData<{ posts: PostType[] }>(API_ENDPOINTS.posts, { posts: [] }).then((data) => {
@@ -20,26 +23,45 @@ const Posts: React.FC = () => {
     });
   }, []);
 
+  const handleCreatePost = async (formData: { title: string; body: string }) => {
+    const newPost = await apiFetchData<PostType>(`${API_ENDPOINTS.posts}/add`, null, 'POST', {
+      title: formData.title,
+      body: formData.body,
+      userId: 5,
+    });
+
+    if (newPost) {
+      setPostData((prev) => (prev ? [newPost, ...prev] : [newPost]));
+      setIsModalWindow(false);
+    }
+  };
+
   if (postsData === null) {
     return <Spinner />;
   }
 
-  if (postsData.length === 0) {
-    return (
-      <div className={styles.error}>
-        <span>Данных нет</span>
-        <div>
-          <ErrorIcon fontSize="large" />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
-      {postsData.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      <Button className={styles.button} variant="contained" onClick={() => setIsModalWindow(true)}>
+        Add new post
+      </Button>
+
+      <ModalWindow
+        isOpen={isModalWindow}
+        onClose={() => setIsModalWindow(false)}
+        onSubmit={handleCreatePost}
+      />
+
+      {postsData.length === 0 ? (
+        <div className={styles.error}>
+          <span>No data</span>
+          <div>
+            <ErrorIcon fontSize="large" />
+          </div>
+        </div>
+      ) : (
+        postsData.map((post) => <Post key={post.id} post={post} />)
+      )}
     </div>
   );
 };

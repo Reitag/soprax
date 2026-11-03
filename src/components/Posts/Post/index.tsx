@@ -23,12 +23,12 @@ const Post: React.FC<Props> = ({ post }) => {
       <div className={styles.footer}>
         <div className={styles.reaction}>
           <ThumbUpOutlinedIcon fontSize="small" />
-          <span>{post.reactions.likes}</span>
+          <span>{post.reactions?.likes}</span>
         </div>
 
         <div className={styles.reaction}>
           <ThumbDownOutlinedIcon fontSize="small" />
-          <span>{post.reactions.dislikes}</span>
+          <span>{post.reactions?.dislikes}</span>
         </div>
 
         <div className={styles.views}>
@@ -39,7 +39,8 @@ const Post: React.FC<Props> = ({ post }) => {
       <button className={styles.button} onClick={handleCommentsVisibility}>
         {isCommentsVisible ? 'Hide Comments' : 'View Comments'}
       </button>
-      {isCommentsVisible && <PostComments key={post.id} id={post.id} />}
+      {isCommentsVisible &&
+        (post.id > 251 ? <div>No comments</div> : <PostComments key={post.id} id={post.id} />)}
     </div>
   );
 };
