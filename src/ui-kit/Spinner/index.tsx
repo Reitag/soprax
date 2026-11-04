@@ -1,5 +1,5 @@
 import SpinnerURL from './assets/spinner.svg';
-import styles from './Spinner.module.scss';
+import styles from './index.module.scss';
 
 const Spinner: React.FC = () => {
   return (

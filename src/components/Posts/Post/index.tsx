@@ -4,12 +4,12 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
-import PostComments from '../PostComments/PostComments';
-import { type PostProps } from '../types';
+import PostComments from '../PostComments';
+import { type Props } from './types';
 
-import styles from './Post.module.scss';
+import styles from './index.module.scss';
 
-const Post: React.FC<PostProps> = ({ post }) => {
+const Post: React.FC<Props> = ({ post }) => {
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
 
   const handleCommentsVisibility = () => {

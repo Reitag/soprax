@@ -6,12 +6,12 @@ import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
 import Spinner from '@/ui-kit/Spinner';
 
-import Post from './Post/Post';
-import { type PostsProps, type Post as PostType } from './types';
+import Post from './Post';
+import { type Post as PostType } from './types';
 
-import styles from './Posts.module.scss';
+import styles from './index.module.scss';
 
-const Posts: React.FC<PostsProps> = () => {
+const Posts: React.FC = () => {
   const [postsData, setPostData] = useState<PostType[] | null>(null);
 
   useEffect(() => {

@@ -5,11 +5,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
 
-import { type PostCommentsProps, type Comment } from '../types';
+import { type Props, type Comment } from './types';
 
-import styles from './PostComments.module.scss';
+import styles from './index.module.scss';
 
-const PostComments: React.FC<PostCommentsProps> = ({ id }) => {
+const PostComments: React.FC<Props> = ({ id }) => {
   const [comments, setComments] = useState<Comment[] | null>(null);
 
   useEffect(() => {
