@@ -1,0 +1,19 @@
+.container {
+  font-family: sans-serif;
+  padding: 16px;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+
+  .error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+    padding: 20px;
+  }
+}

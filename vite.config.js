@@ -4,7 +4,13 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/styles/mixins" as *;`,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),
