@@ -7,6 +7,10 @@
   gap: 24px;
   margin: 0 auto;
 
+  .link {
+    text-decoration: none;
+  }
+
   .error {
     display: flex;
     flex-direction: column;

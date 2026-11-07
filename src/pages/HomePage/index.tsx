@@ -1,13 +1,12 @@
-import { Typography } from '@mui/material';
 import type { FC } from 'react';
+
+import styles from './index.module.scss';
 
 const HomePage: FC = () => {
   return (
-    <div>
-      <Typography variant="h2" gutterBottom>
-        Home Page
-      </Typography>
-    </div>
+    <>
+      <h2 className={styles.title}>Home Page</h2>
+    </>
   );
 };
 

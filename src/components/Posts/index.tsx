@@ -7,11 +7,12 @@ import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
 import Spinner from '@/ui-kit/Spinner';
 
-import Post from './Post';
 import ModalWindow from '@/components/Modal';
 import { type Post as PostType } from './types';
 
 import styles from './index.module.scss';
+import { Link } from 'react-router-dom';
+import PreviewPost from './PreviewPost';
 
 const Posts: React.FC = () => {
   const [postsData, setPostData] = useState<PostType[] | null>(null);
@@ -60,7 +61,13 @@ const Posts: React.FC = () => {
           </div>
         </div>
       ) : (
-        postsData.map((post) => <Post key={post.id} post={post} />)
+        postsData.map((post) => {
+          return (
+            <Link key={post.id} to={`${post.id}`} className={styles.link}>
+              <PreviewPost post={post} />
+            </Link>
+          );
+        })
       )}
     </div>
   );

@@ -1,15 +1,22 @@
 import { Outlet, Link } from 'react-router-dom';
+import styles from './index.module.scss';
 
 export default function Layout() {
   return (
-    <div>
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/posts">Posts</Link>
-        <Link to="/settings">Настройки</Link>
-      </nav>
-      <main>
-        <Outlet /> {/* здесь рендерится дочерний маршрут (Home / Dashboard / Settings) */}
+    <div className={styles.layout}>
+      <header className={styles.header}>
+        <nav className={styles.nav}>
+          <Link to="/" className={styles.link}>
+            Home
+          </Link>
+          <Link to="/posts" className={styles.link}>
+            Posts
+          </Link>
+        </nav>
+      </header>
+
+      <main className={styles.main}>
+        <Outlet />
       </main>
     </div>
   );
