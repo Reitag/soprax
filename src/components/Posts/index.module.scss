@@ -7,6 +7,10 @@
   gap: 24px;
   margin: 0 auto;
 
+  .link {
+    text-decoration: none;
+  }
+
   .error {
     display: flex;
     flex-direction: column;
@@ -15,5 +19,17 @@
     gap: 16px;
     text-align: center;
     padding: 20px;
+  }
+
+  .button {
+    background-color: #333333;
+    border-radius: 8px;
+    padding: 10px 20px;
+    text-transform: none;
+    font-family: inherit;
+
+    &:hover {
+      background-color: #1a1a1a;
+    }
   }
 }
