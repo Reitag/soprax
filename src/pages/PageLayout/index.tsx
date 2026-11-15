@@ -1,18 +1,12 @@
 import { Outlet, Link } from 'react-router-dom';
+import Navbar from '@/components/Navbar';
 import styles from './index.module.scss';
 
 export default function Layout() {
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
-        <nav className={styles.nav}>
-          <Link to="/" className={styles.link}>
-            Home
-          </Link>
-          <Link to="/posts" className={styles.link}>
-            Posts
-          </Link>
-        </nav>
+        <Navbar />
       </header>
 
       <main className={styles.main}>

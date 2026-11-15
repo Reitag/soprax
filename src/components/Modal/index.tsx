@@ -6,14 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import { Props } from './type';
 
-interface CreatePostModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (formData: { title: string; body: string }) => void;
-}
-
-const ModalWindow: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const CreatePostModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
@@ -58,4 +53,4 @@ const ModalWindow: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSubmit
   );
 };
 
-export default ModalWindow;
+export default CreatePostModal;

@@ -29,7 +29,7 @@ const Post: React.FC<Props> = ({ post }) => {
             <span>{post.views}</span>
           </div>
         </div>
-        {post.id > 251 ? <div>No comments</div> : <PostComments key={post.id} id={post.id} />}
+        <PostComments key={post.id} id={post.id} />
       </div>
     </div>
   );

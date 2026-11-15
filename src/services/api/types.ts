@@ -1,3 +1,5 @@
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
 export type Post = {
   id: number;
   body: string;

@@ -1,11 +1,11 @@
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+import { HttpMethod } from './types';
 
 export async function apiFetchData<T>(
   url: string,
   emptyData: unknown,
   method: HttpMethod = 'GET',
   bodyData: unknown = null
-): Promise<T | undefined> {
+): Promise<T> {
   try {
     const options: RequestInit = {
       method,
@@ -17,23 +17,17 @@ export async function apiFetchData<T>(
       };
       options.body = JSON.stringify(bodyData);
     }
-    // Positive scenario
-    const response = await fetch(url, options);
 
+    const response = await fetch(url, options);
     if (response.ok) {
       if (method === 'DELETE' || response.status === 204) {
         return { isDeleted: true } as T;
       }
       return await response.json();
-    }
-    /*if (response.status === 200) {
-      return await response.json(); // Expected case
-    }*/
-    if (response.status === 404) {
+    } else {
       return emptyData as T;
     }
   } catch (error) {
-    // Negative scenario
-    console.log(`Error: ${error}`);
+    throw new Error('Connection error');
   }
 }

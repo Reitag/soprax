@@ -1,27 +1,32 @@
 import { useEffect, useState } from 'react';
-
+import type { FC } from 'react';
 import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
 import Spinner from '@/ui-kit/Spinner';
-
-import ModalWindow from '@/components/Modal';
-import { type Post as PostType } from './types';
-
-import styles from './index.module.scss';
-import { Link } from 'react-router-dom';
+import CreatePostModal from '@/components/Modal';
 import PreviewPost from './PreviewPost';
+import { type Post as PostType } from '@/services/api/types';
+import styles from './index.module.scss';
 
-const Posts: React.FC = () => {
+const Posts: FC = () => {
   const [postsData, setPostData] = useState<PostType[] | null>(null);
-  const [isModalWindow, setIsModalWindow] = useState(false);
+  const [isModalOpen, setIsModalWindow] = useState(false);
+  const [isFetchLoading, setFetchLoading] = useState(true);
 
   useEffect(() => {
-    apiFetchData<{ posts: PostType[] }>(API_ENDPOINTS.posts, { posts: [] }).then((data) => {
-      if (data) setPostData(data.posts);
-    });
+    apiFetchData<{ posts: PostType[] }>(API_ENDPOINTS.posts, { posts: [] })
+      .then((data) => {
+        setPostData(data.posts);
+      })
+      .catch(() => {
+        setPostData(null);
+      })
+      .finally(() => {
+        setFetchLoading(false);
+      });
   }, []);
 
   const handleCreatePost = async (formData: { title: string; body: string }) => {
@@ -37,8 +42,19 @@ const Posts: React.FC = () => {
     }
   };
 
-  if (postsData === null) {
+  if (isFetchLoading) {
     return <Spinner />;
+  }
+
+  if (postsData === null) {
+    return (
+      <div className={styles.error}>
+        <span>Failed to load posts</span>
+        <div>
+          <ErrorIcon fontSize="large" />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -47,26 +63,17 @@ const Posts: React.FC = () => {
         Add new post
       </Button>
 
-      <ModalWindow
-        isOpen={isModalWindow}
+      <CreatePostModal
+        isOpen={isModalOpen}
         onClose={() => setIsModalWindow(false)}
         onSubmit={handleCreatePost}
       />
 
       {postsData.length === 0 ? (
-        <div className={styles.error}>
-          <span>No data</span>
-          <div>
-            <ErrorIcon fontSize="large" />
-          </div>
-        </div>
+        <span>No data</span>
       ) : (
         postsData.map((post) => {
-          return (
-            <Link key={post.id} to={`${post.id}`} className={styles.link}>
-              <PreviewPost post={post} />
-            </Link>
-          );
+          return <PreviewPost post={post} />;
         })
       )}
     </div>
