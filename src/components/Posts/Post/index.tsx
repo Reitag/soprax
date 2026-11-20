@@ -1,13 +1,13 @@
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-
+import type { FC } from 'react';
 import PostComments from '../PostComments';
 import { type Props } from './types';
 
 import styles from './index.module.scss';
 
-const Post: React.FC<Props> = ({ post }) => {
+const Post: FC<Props> = ({ post }) => {
   return (
     <div className={styles.container}>
       <div className={styles.item}>

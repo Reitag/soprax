@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { FC } from 'react';
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -8,7 +9,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { Props } from './type';
 
-const CreatePostModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
+const CreatePostModal: FC<Props> = ({ isOpen, onClose, onSubmit }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 

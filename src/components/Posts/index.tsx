@@ -6,7 +6,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
 import Spinner from '@/ui-kit/Spinner';
-import CreatePostModal from '@/components/Modal';
+import CreatePostModal from '@/components/Posts/CreatePostModal';
 import PreviewPost from './PreviewPost';
 import { type Post as PostType } from '@/services/api/types';
 import styles from './index.module.scss';
@@ -72,9 +72,7 @@ const Posts: FC = () => {
       {postsData.length === 0 ? (
         <span>No data</span>
       ) : (
-        postsData.map((post) => {
-          return <PreviewPost post={post} />;
-        })
+        postsData.map((post) => <PreviewPost key={post.id} post={post} />)
       )}
     </div>
   );

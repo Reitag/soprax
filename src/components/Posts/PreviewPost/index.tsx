@@ -1,13 +1,14 @@
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import type { FC } from 'react';
 import { type Props } from './types';
 import styles from './index.module.scss';
 import { Link } from 'react-router-dom';
 
-const PreviewPost: React.FC<Props> = ({ post }) => {
+const PreviewPost: FC<Props> = ({ post }) => {
   return (
-    <Link key={post.id} to={`${post.id}`} className={styles.link}>
+    <Link to={`${post.id}`} className={styles.link}>
       <div className={styles.item}>
         <h2 className={styles.title}>{post.title}</h2>
         <p className={styles.content}>{post.body}</p>
