@@ -1,0 +1,21 @@
+.layout {
+  min-height: 100vh;
+  font-family: sans-serif;
+  background-color: #fafafa;
+  color: #333;
+
+  .header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px 16px 32px;
+  }
+}

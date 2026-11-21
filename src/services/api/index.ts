@@ -1,15 +1,33 @@
-export async function apiFetchData<T>(url: string, emptyData: unknown): Promise<T | undefined> {
+import { HttpMethod } from './types';
+
+export async function apiFetchData<T>(
+  url: string,
+  emptyData: unknown,
+  method: HttpMethod = 'GET',
+  bodyData: unknown = null
+): Promise<T> {
   try {
-    // Positive scenario
-    const response = await fetch(url);
-    if (response.status === 200) {
-      return await response.json(); // Expected case
+    const options: RequestInit = {
+      method,
+    };
+
+    if (bodyData) {
+      options.headers = {
+        'Content-Type': 'application/json',
+      };
+      options.body = JSON.stringify(bodyData);
     }
-    if (response.status === 404) {
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+      if (method === 'DELETE' || response.status === 204) {
+        return { isDeleted: true } as T;
+      }
+      return await response.json();
+    } else {
       return emptyData as T;
     }
   } catch (error) {
-    // Negative scenario
-    console.log(`Error: ${error}`);
+    throw new Error('Connection error');
   }
 }

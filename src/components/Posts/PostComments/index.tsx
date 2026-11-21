@@ -1,31 +1,38 @@
 import { useEffect, useState } from 'react';
-
+import type { FC } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
 import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
-
 import { type Props, type Comment } from './types';
-
 import styles from './index.module.scss';
 
-const PostComments: React.FC<Props> = ({ id }) => {
+const PostComments: FC<Props> = ({ id }) => {
   const [comments, setComments] = useState<Comment[] | null>(null);
+  const [isFetchLoading, setFetchLoading] = useState(true);
 
   useEffect(() => {
-    apiFetchData<{ comments: Comment[] }>(`${API_ENDPOINTS.comments}${id}`, { comments: [] }).then(
-      (data) => {
-        if (data) setComments(data.comments);
-      }
-    );
+    apiFetchData<{ comments: Comment[] }>(`${API_ENDPOINTS.comments}${id}`, { comments: [] })
+      .then((data) => {
+        setComments(data.comments);
+      })
+      .catch(() => {
+        setComments(null);
+      })
+      .finally(() => {
+        setFetchLoading(false);
+      });
   }, []);
 
+  if (isFetchLoading) {
+    return <div className={styles.text}>Загрузка комментариев</div>;
+  }
+
   if (comments === null) {
-    return <div>Загрузка комментариев</div>;
+    return <div className={styles.text}>Failed to load comments</div>;
   }
 
   if (comments.length === 0) {
-    return <div>Комментариев нет</div>;
+    return null;
   }
 
   return (

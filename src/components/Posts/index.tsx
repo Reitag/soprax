@@ -1,33 +1,55 @@
 import { useEffect, useState } from 'react';
-
+import type { FC } from 'react';
+import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
 import Spinner from '@/ui-kit/Spinner';
-
-import Post from './Post';
-import { type Post as PostType } from './types';
-
+import CreatePostModal from '@/components/Posts/CreatePostModal';
+import PreviewPost from './PreviewPost';
+import { type Post as PostType } from '@/services/api/types';
 import styles from './index.module.scss';
 
-const Posts: React.FC = () => {
+const Posts: FC = () => {
   const [postsData, setPostData] = useState<PostType[] | null>(null);
+  const [isModalOpen, setIsModalWindow] = useState(false);
+  const [isFetchLoading, setFetchLoading] = useState(true);
 
   useEffect(() => {
-    apiFetchData<{ posts: PostType[] }>(API_ENDPOINTS.posts, { posts: [] }).then((data) => {
-      if (data) setPostData(data.posts);
-    });
+    apiFetchData<{ posts: PostType[] }>(API_ENDPOINTS.posts, { posts: [] })
+      .then((data) => {
+        setPostData(data.posts);
+      })
+      .catch(() => {
+        setPostData(null);
+      })
+      .finally(() => {
+        setFetchLoading(false);
+      });
   }, []);
 
-  if (postsData === null) {
+  const handleCreatePost = async (formData: { title: string; body: string }) => {
+    const newPost = await apiFetchData<PostType>(`${API_ENDPOINTS.posts}/add`, null, 'POST', {
+      title: formData.title,
+      body: formData.body,
+      userId: 5,
+    });
+
+    if (newPost) {
+      setPostData((prev) => (prev ? [newPost, ...prev] : [newPost]));
+      setIsModalWindow(false);
+    }
+  };
+
+  if (isFetchLoading) {
     return <Spinner />;
   }
 
-  if (postsData.length === 0) {
+  if (postsData === null) {
     return (
       <div className={styles.error}>
-        <span>Данных нет</span>
+        <span>Failed to load posts</span>
         <div>
           <ErrorIcon fontSize="large" />
         </div>
@@ -37,9 +59,21 @@ const Posts: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {postsData.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      <Button className={styles.button} variant="contained" onClick={() => setIsModalWindow(true)}>
+        Add new post
+      </Button>
+
+      <CreatePostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalWindow(false)}
+        onSubmit={handleCreatePost}
+      />
+
+      {postsData.length === 0 ? (
+        <span>No data</span>
+      ) : (
+        postsData.map((post) => <PreviewPost key={post.id} post={post} />)
+      )}
     </div>
   );
 };
