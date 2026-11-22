@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Error';
-
 import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
 import Spinner from '@/ui-kit/Spinner';

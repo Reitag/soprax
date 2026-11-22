@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -13,6 +12,8 @@ const CreatePostModal: FC<Props> = ({ isOpen, onClose, onSubmit }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
+  const isCreateDisabled = !title.trim() || !body.trim();
+
   const handleSubmit = () => {
     if (!title.trim() || !body.trim()) return;
     onSubmit({ title, body });
@@ -21,13 +22,13 @@ const CreatePostModal: FC<Props> = ({ isOpen, onClose, onSubmit }) => {
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
+    <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>Add new post</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
-          label="Заголовок поста"
+          label="Post title"
           fullWidth
           variant="outlined"
           value={title}
@@ -35,7 +36,7 @@ const CreatePostModal: FC<Props> = ({ isOpen, onClose, onSubmit }) => {
         />
         <TextField
           margin="dense"
-          label="Текст поста"
+          label="Post content"
           fullWidth
           multiline
           rows={4}
@@ -46,7 +47,7 @@ const CreatePostModal: FC<Props> = ({ isOpen, onClose, onSubmit }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button variant="contained" onClick={handleSubmit} disabled={isCreateDisabled}>
           Create
         </Button>
       </DialogActions>
