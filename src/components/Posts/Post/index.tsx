@@ -2,21 +2,31 @@ import EditIcon from '@mui/icons-material/Edit';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+} from '@mui/material';
 import { useState, type FC } from 'react';
-import PostComments from '../PostComments';
-import { type Props } from './types';
+import { useNavigate } from 'react-router-dom';
 import { type Post as PostType } from '@/services/api/types';
-import styles from './index.module.scss';
-import EditPostModal from '../EditPostModal';
 import { apiFetchData } from '@/services/api';
 import { API_ENDPOINTS } from '@/services/api/config';
+import EditPostModal from '../EditPostModal';
+import PostComments from '../PostComments';
+import { type Props } from './types';
+import styles from './index.module.scss';
 
 const Post: FC<Props> = ({ post }) => {
   const [postData, setPostData] = useState<PostType>(post);
   const [isModalOpen, setIsModalWindow] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleEditPost = async (formData: { title: string; body: string }) => {
+  const handleEditPost = async (formData: { title: string; body: string }): Promise<void> => {
     const editedPost = await apiFetchData<PostType>(
       `${API_ENDPOINTS.posts}/${post.id}`,
       null,
@@ -27,29 +37,32 @@ const Post: FC<Props> = ({ post }) => {
       }
     );
 
-    setPostData((prev) => ({
-      ...prev,
-      title: editedPost.title,
-      body: editedPost.body,
-    }));
-    setIsModalWindow(false);
+    if (editedPost) {
+      setPostData((prev) => ({
+        ...prev,
+        title: editedPost.title,
+        body: editedPost.body,
+      }));
+      setIsModalWindow(false);
+    }
   };
 
-  const handleDeletePost = async () => {
+  const handleDeletePost = (): void => {
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirmDeletePost = async (): Promise<void> => {
     const result = await apiFetchData<{ isDeleted: boolean }>(
       `${API_ENDPOINTS.posts}/${postData.id}`,
       null,
       'DELETE'
     );
-    if (result.isDeleted) {
+    if (result?.isDeleted) {
+      setIsConfirmOpen(false);
       setIsModalWindow(false);
-      setIsDeleted(true);
+      navigate('/posts');
     }
   };
-
-  if (isDeleted) {
-    return null;
-  }
 
   return (
     <div className={styles.container}>
@@ -80,16 +93,26 @@ const Post: FC<Props> = ({ post }) => {
         </div>
         <PostComments key={postData.id} id={postData.id} />
       </div>
-      {isModalOpen && (
-        <EditPostModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalWindow(false)}
-          onSubmit={handleEditPost}
-          onDelete={handleDeletePost}
-          title={postData.title}
-          body={postData.body}
-        />
-      )}
+      <EditPostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalWindow(false)}
+        onSubmit={handleEditPost}
+        onDelete={handleDeletePost}
+        title={postData.title}
+        body={postData.body}
+      />
+      <Dialog open={isConfirmOpen} onClose={() => setIsConfirmOpen(false)}>
+        <DialogTitle>Delete post?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to delete this post?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsConfirmOpen(false)}>Cancel</Button>
+          <Button onClick={handleConfirmDeletePost} color="error" variant="contained">
+            Yes, delete it!
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
