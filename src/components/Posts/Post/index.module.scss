@@ -16,11 +16,25 @@
     padding: 24px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-      margin: 0 0 12px 0;
-      color: #333;
+    .header {
+      display: flex;
+      justify-content: space-between;
+
+      .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 0 12px 0;
+        color: #333;
+      }
+
+      .button {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        cursor: pointer;
+        color: #666;
+        @include flex-y-center;
+      }
     }
 
     .content {

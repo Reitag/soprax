@@ -1,4 +1,4 @@
-import { Post } from '../types';
+import { Post } from '@/services/api/types';
 
 export type Props = {
   post: Post;
